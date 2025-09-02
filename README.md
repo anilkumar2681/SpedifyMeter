@@ -1,5 +1,6 @@
 # 🚀 SpedifyMeter – Internet Speed Tester App  
 
+![Banner_](images/banner.png)
 
 SpedifyMeter is a clean and modern **internet speed tester app** built with **Jetpack Compose** for Android.  
 It helps users measure their **download speed, upload speed, and ping latency** in real time with an intuitive **speedometer UI**.  
