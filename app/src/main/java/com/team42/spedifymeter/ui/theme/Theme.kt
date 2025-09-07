@@ -8,28 +8,31 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Teal200,
+    //primaryVariant = Purple700,
+    secondary = Pink,
+    background = DarkColor,
+    surface = DarkColor2,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onSurface = LightColor2,
+    onBackground = LightColor2
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Teal200,
+    //primaryVariant = Teal200,
+    secondary = Pink,
+    background = Color(0xFFF7F8FA),
+    surface = Color.White,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onSurface = Color(0xFF1B1D22),
+    onBackground = Color(0xFF1B1D22)
 )
 
 @Composable
@@ -52,6 +55,7 @@ fun SpedifyMeterTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        shapes = Shapes,
         content = content
     )
 }
