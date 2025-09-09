@@ -7,18 +7,23 @@ package com.team42.spedifymeter.speedtest
  * Copyright © 2025 Team42. All rights reserved.
  **/
 
-import com.team42.spedifymeter.network.HttpClientProvider
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okio.BufferedSink
 import java.util.concurrent.atomic.AtomicLong
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.pow
 import kotlin.random.Random
 
-internal object SpeedTestEngine {
-    private const val BUFFER_SIZE = 64 * 1024 // 64KB
+@Singleton
+class SpeedTestEngine @Inject constructor(
+    private val client: OkHttpClient // ✅ injected via Hilt
+) {
+    private val bufferSize = 64 * 1024 // 64KB
 
     suspend fun measureSpeedTimed(
         urls: List<String>,
@@ -30,14 +35,13 @@ internal object SpeedTestEngine {
         onInstant: (Float) -> Unit
     ): Float = withContext(scope.coroutineContext) {
 
-        val client = HttpClientProvider.client
         val totalBytes = AtomicLong(0)
         val startTime = System.currentTimeMillis()
 
         val jobs = List(parallelStreams) { index ->
             async(Dispatchers.IO) {
                 val url = urls[index % urls.size]
-                val buffer = ByteArray(BUFFER_SIZE)
+                val buffer = ByteArray(bufferSize)
 
                 var attempt = 0
                 while (isActive && System.currentTimeMillis() - startTime < durationMs) {
@@ -47,7 +51,7 @@ internal object SpeedTestEngine {
                                 override fun contentType() = "application/octet-stream".toMediaType()
                                 override fun writeTo(sink: BufferedSink) {
                                     val random = Random(System.nanoTime())
-                                    repeat(BUFFER_SIZE / 1024) {
+                                    repeat(bufferSize / 1024) {
                                         val chunk = ByteArray(1024) { random.nextBytes(1)[0] }
                                         sink.write(chunk)
                                     }
@@ -70,10 +74,11 @@ internal object SpeedTestEngine {
                         }
 
                         attempt = 0 // ✅ reset backoff
-
                     } catch (_: Exception) {
                         attempt++
-                        val backoff = (100L * 2.0.pow(attempt.toDouble())).toLong().coerceAtMost(5000L)
+                        val backoff = (100L * 2.0.pow(attempt.toDouble()))
+                            .toLong()
+                            .coerceAtMost(5000L)
                         delay(backoff)
                     }
                 }
@@ -100,3 +105,4 @@ internal object SpeedTestEngine {
         return@withContext ((totalBytes.get() * 8.0 / 1_000_000) / (totalElapsed / 1000.0)).toFloat()
     }
 }
+

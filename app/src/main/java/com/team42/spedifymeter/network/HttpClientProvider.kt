@@ -11,8 +11,9 @@ import okhttp3.Call
 import okhttp3.OkHttpClient
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-object HttpClientProvider {
+class HttpClientProvider @Inject constructor() {
     private val activeCalls = CopyOnWriteArrayList<Call>()
     val client: OkHttpClient by lazy {
         OkHttpClient.Builder()

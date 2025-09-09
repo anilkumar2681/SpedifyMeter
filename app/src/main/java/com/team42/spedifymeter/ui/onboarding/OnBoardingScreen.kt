@@ -63,7 +63,7 @@ class OnBoardingFragment : Fragment() {
             setContent {
                 SpedifyMeterTheme {
                     OnBoardingScreen(
-                        onFinished = {}
+
                     )
                 }
             }
@@ -72,7 +72,7 @@ class OnBoardingFragment : Fragment() {
 }
 
 @Composable
-fun OnBoardingScreen(onFinished: () -> Unit) {
+fun OnBoardingScreen() {
     val page = remember { mutableIntStateOf(0) }
 
     val subTitle = listOf(
@@ -161,10 +161,10 @@ fun OnBoardingScreen(onFinished: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = onFinished) { Text("Skip") }
+                TextButton(onClick = { /* Handle skip button click */ }) { Text("Skip") }
                 Button(
                     onClick = {
-                        if (page.intValue < pages.lastIndex) page.intValue += 1 else onFinished()
+//                        if (page.intValue < pages.lastIndex) page.intValue += 1 else onFinished()
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black,
@@ -183,7 +183,7 @@ fun OnBoardingScreen(onFinished: () -> Unit) {
 @Composable
 fun OnBoardingScreenPreview() {
     SpedifyMeterTheme {
-        OnBoardingScreen(onFinished = {})
+        OnBoardingScreen()
     }
 }
 

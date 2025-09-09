@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.team42.spedifymeter.SpeedTestViewModel
 import com.team42.spedifymeter.ui.customComponent.BottomNavBar
 import com.team42.spedifymeter.ui.theme.DarkColor
@@ -41,7 +42,6 @@ import com.team42.spedifymeter.ui.theme.SpedifyMeterTheme
  * Copyright © 2025 Team42. All rights reserved.
  **/
 class SpeedScreenFragment : Fragment() {
-    lateinit var viewModel: SpeedTestViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,10 +49,9 @@ class SpeedScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return ComposeView(requireContext()).apply {
-            viewModel = SpeedTestViewModel(Application())
             setContent {
                 SpedifyMeterTheme {
-                    SpeedScreen(viewModel)
+                    SpeedScreen()
                 }
             }
         }
@@ -61,7 +60,7 @@ class SpeedScreenFragment : Fragment() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SpeedScreen(viewModel: SpeedTestViewModel) {
+fun SpeedScreen(viewModel: SpeedTestViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -86,7 +85,7 @@ fun SpeedScreen(viewModel: SpeedTestViewModel) {
                 )
         }
     ) { pad ->
-        when (selectedTab) {
+//        when (selectedTab) {
 //            0 -> SpeedTestScreenContent(
 //                uiState = uiState,
 //                onStartTest = { viewModel.startSpeedTest() },
@@ -100,7 +99,7 @@ fun SpeedScreen(viewModel: SpeedTestViewModel) {
 //            )
 
 
-        }
+    //    }
     }
 
 }
@@ -108,6 +107,5 @@ fun SpeedScreen(viewModel: SpeedTestViewModel) {
 @Preview(showBackground = true)
 @Composable
 fun SpeedScreenPreview() {
-    val viewModel = SpeedTestViewModel(Application())
-    SpeedScreen(viewModel)
+    SpeedScreen()
 }

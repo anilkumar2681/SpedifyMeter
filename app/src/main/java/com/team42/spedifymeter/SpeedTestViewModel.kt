@@ -1,23 +1,26 @@
 package com.team42.spedifymeter
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.team42.spedifymeter.speedtest.SpeedTestApi
+import com.team42.spedifymeter.speedtest.SpeedTestService
+import com.team42.spedifymeter.speedtest.SpeedTestEngine
 import com.team42.spedifymeter.speedtest.SpeedTestState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SpeedTestViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class SpeedTestViewModel @Inject constructor(
+    private val speedTestService: SpeedTestService
+) : ViewModel() {
     private val _state = MutableStateFlow<SpeedTestState>(SpeedTestState.Phase("Idle"))
     val state: StateFlow<SpeedTestState> get() = _state
 
     fun startTest() {
         viewModelScope.launch {
-            SpeedTestApi.runFullTest(
+            speedTestService.runFullTest(
                 scope = this,
                 durationMs = 5000,
                 parallelStreams = 2
@@ -28,7 +31,7 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun cancelTest() {
-        SpeedTestApi.cancel()
+        speedTestService.cancel()
         _state.value = SpeedTestState.Cancelled
     }
 

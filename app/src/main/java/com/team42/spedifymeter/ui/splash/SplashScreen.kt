@@ -36,7 +36,7 @@ import kotlinx.coroutines.delay
  * Copyright © 2025 Team42. All rights reserved.
  **/
 @Composable
-fun SplashScreen(onNavigate: (Boolean) -> Unit) {
+fun SplashScreen() {
     var visible by remember { mutableStateOf(false) }
     val alpha by animateFloatAsState(targetValue = if (visible) 1f else 0f)
     val scale by animateFloatAsState(
@@ -81,5 +81,5 @@ fun SplashScreen(onNavigate: (Boolean) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
-    SpedifyMeterTheme { SplashScreen(onNavigate = {}) }
+    SpedifyMeterTheme { SplashScreen() }
 }
