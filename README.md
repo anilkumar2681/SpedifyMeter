@@ -53,3 +53,6 @@ _Add your app screenshots here_
 Contributions, issues, and feature requests are welcome!
 Feel free to **fork** the repo and submit a **PR**.
 
+## WhatsApp Channel
+Get Kotlin & Android Jetpack Compose tips on `What's App` **Join My Channel** :
+[📚 Kotlin & Android Learning📚](https://whatsapp.com/channel/0029VbBGTNr90x2umLoWKU3z)
