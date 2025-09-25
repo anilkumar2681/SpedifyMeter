@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.MySplash" parent="Theme.SplashScreen">
+<!--        <item name="windowSplashScreenBackground">@color/cardview_dark_background</item>-->
+        <item name="windowSplashScreenBackground">@color/endColor</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.SpedifyMeter</item>
+    </style>
 
     <style name="Theme.SpedifyMeter" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

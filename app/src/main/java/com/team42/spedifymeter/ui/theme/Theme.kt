@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = Teal200,
-    //primaryVariant = Purple700,
     secondary = Pink,
     background = DarkColor,
     surface = DarkColor2,
@@ -25,7 +24,6 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = Teal200,
-    //primaryVariant = Teal200,
     secondary = Pink,
     background = Color(0xFFF7F8FA),
     surface = Color.White,
