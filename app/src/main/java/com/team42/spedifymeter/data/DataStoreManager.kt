@@ -1,11 +1,12 @@
 package com.team42.spedifymeter.data
 
-import androidx.datastore.preferences.preferencesDataStore
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -20,7 +21,6 @@ private val Context.dataStore by preferencesDataStore(name = "app_prefs")
 
 class DataStoreManager(private val context: Context) {
 
-    // Generic getter with default + error handling
     fun <T> getPreference(
         key: Preferences.Key<T>,
         defaultValue: T
@@ -29,17 +29,22 @@ class DataStoreManager(private val context: Context) {
             if (exception is IOException) emit(emptyPreferences())
             else throw exception
         }
-        .map { prefs -> prefs[key] ?: defaultValue }
+        .map { prefs ->
+            val value = prefs[key] ?: defaultValue
+            Log.d("DataStoreManager", "Read ${key.name} = $value")
+            value
+        }
 
-    // Generic setter
     suspend fun <T> setPreference(
         key: Preferences.Key<T>,
         value: T
     ): Result<Unit> = runCatching {
-        context.dataStore.edit { prefs -> prefs[key] = value }
+        context.dataStore.edit { prefs ->
+            prefs[key] = value
+            Log.d("DataStoreManager", "Saved ${key.name} = $value")
+        }
     }
 
-    // Generic updater (transform value)
     suspend fun <T> updatePreference(
         key: Preferences.Key<T>,
         defaultValue: T,

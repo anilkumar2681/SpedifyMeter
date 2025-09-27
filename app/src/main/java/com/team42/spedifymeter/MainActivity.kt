@@ -3,12 +3,8 @@ package com.team42.spedifymeter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
@@ -25,17 +21,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             val viewModel: SpeedTestViewModel = hiltViewModel()
             val navController = rememberNavController()
-            var startDestination by remember { mutableStateOf<String?>(null) }
             val onboardingDone by viewModel.isOnboardingDone.collectAsState()
 
-            splashScreen.setKeepOnScreenCondition { startDestination == null }
-            LaunchedEffect(Unit) {
-                startDestination = if (onboardingDone) Routes.HOME else Routes.ONBOARD
+            if (onboardingDone == null) {
+                splashScreen.setKeepOnScreenCondition { true }
+            } else {
+                splashScreen.setKeepOnScreenCondition { false }
+                SpedifyMeterNavGraph(
+                    navController = navController,
+                    startDestination = if (onboardingDone == true) Routes.HOME else Routes.ONBOARD,
+                    viewModel = viewModel
+                )
             }
-            startDestination?.let { startDest ->
-                SpedifyMeterNavGraph(navController, startDest, viewModel)
-            }
-
         }
     }
 }

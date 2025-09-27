@@ -1,6 +1,5 @@
 package com.team42.spedifymeter.data.preferences
 
-import android.content.Context
 import com.team42.spedifymeter.data.DataStoreManager
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
  * Created By: ANIL KUMAR on 9/9/2025
  * Copyright © 2025 Team42. All rights reserved.
  **/
-class Prefs(private val ds: DataStoreManager, context: Context) {
+class Prefs(private val ds: DataStoreManager) {
 
     // ---- Exposed Flows ----
     val onboardingDone: Flow<Boolean> = ds.getPreference(PrefsKeys.OnboardingDone, false)

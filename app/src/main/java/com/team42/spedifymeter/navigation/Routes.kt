@@ -32,14 +32,15 @@ fun SpedifyMeterNavGraph(
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Routes.ONBOARD) {
             OnBoardingScreen(
+                viewModel = viewModel,
                 onFinished = {
-                    navController.navigate("home") {
-                        popUpTo("onboarding") { inclusive = true }
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.ONBOARD) { inclusive = true }
                     }
                 }
             )
         }
-        composable("home") { SpeedScreen(viewModel) }
+        composable(Routes.HOME) { SpeedScreen(viewModel) }
     }
 }
 

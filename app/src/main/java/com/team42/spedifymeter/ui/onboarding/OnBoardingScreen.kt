@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.team42.spedifymeter.R
+import com.team42.spedifymeter.SpeedTestViewModel
 import com.team42.spedifymeter.ui.theme.DarkGradient
 import com.team42.spedifymeter.ui.theme.Teal200
 
@@ -46,6 +47,7 @@ import com.team42.spedifymeter.ui.theme.Teal200
  **/
 @Composable
 fun OnBoardingScreen(
+    viewModel: SpeedTestViewModel,
     onFinished: () -> Unit
 ) {
     val page = remember { mutableIntStateOf(0) }
@@ -136,13 +138,21 @@ fun OnBoardingScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = { onFinished()}) { Text("Skip") }
+                TextButton(
+                    onClick = {
+                        viewModel.completeOnboarding {
+                            onFinished()
+                        }
+                    })
+                { Text("Skip") }
                 Button(
                     onClick = {
                         if (page.intValue < pages.lastIndex) {
                             page.intValue += 1
                         } else {
-                            onFinished()
+                            viewModel.completeOnboarding {
+                                onFinished()
+                            }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
