@@ -32,11 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.team42.spedifymeter.R
 import com.team42.spedifymeter.ui.theme.DarkGradient
-import com.team42.spedifymeter.ui.theme.SpedifyMeterTheme
 import com.team42.spedifymeter.ui.theme.Teal200
 
 
@@ -47,7 +45,9 @@ import com.team42.spedifymeter.ui.theme.Teal200
  * Copyright © 2025 Team42. All rights reserved.
  **/
 @Composable
-fun OnBoardingScreen() {
+fun OnBoardingScreen(
+    onFinished: () -> Unit
+) {
     val page = remember { mutableIntStateOf(0) }
 
     val subTitle = listOf(
@@ -136,10 +136,14 @@ fun OnBoardingScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = { /* Handle skip button click */ }) { Text("Skip") }
+                TextButton(onClick = { onFinished()}) { Text("Skip") }
                 Button(
                     onClick = {
-//                        if (page.intValue < pages.lastIndex) page.intValue += 1 else onFinished()
+                        if (page.intValue < pages.lastIndex) {
+                            page.intValue += 1
+                        } else {
+                            onFinished()
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black,
@@ -150,15 +154,6 @@ fun OnBoardingScreen() {
                 }
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun OnBoardingScreenPreview() {
-    SpedifyMeterTheme {
-        OnBoardingScreen()
     }
 }
 

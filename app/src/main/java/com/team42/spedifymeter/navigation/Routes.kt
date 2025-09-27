@@ -30,7 +30,15 @@ fun SpedifyMeterNavGraph(
     viewModel: SpeedTestViewModel
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
-        composable("onboard") { OnBoardingScreen() }
+        composable(Routes.ONBOARD) {
+            OnBoardingScreen(
+                onFinished = {
+                    navController.navigate("home") {
+                        popUpTo("onboarding") { inclusive = true }
+                    }
+                }
+            )
+        }
         composable("home") { SpeedScreen(viewModel) }
     }
 }
