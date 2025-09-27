@@ -41,26 +41,9 @@ import com.team42.spedifymeter.ui.theme.SpedifyMeterTheme
  * Created By: ANIL KUMAR on 9/4/2025
  * Copyright © 2025 Team42. All rights reserved.
  **/
-class SpeedScreenFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                SpedifyMeterTheme {
-                    SpeedScreen()
-                }
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SpeedScreen(viewModel: SpeedTestViewModel = hiltViewModel()) {
+fun SpeedScreen(viewModel: SpeedTestViewModel) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -102,10 +85,4 @@ fun SpeedScreen(viewModel: SpeedTestViewModel = hiltViewModel()) {
     //    }
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SpeedScreenPreview() {
-    SpeedScreen()
 }

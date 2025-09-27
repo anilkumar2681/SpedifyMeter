@@ -1,5 +1,13 @@
 package com.team42.spedifymeter.navigation
 
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.team42.spedifymeter.SpeedTestViewModel
+import com.team42.spedifymeter.ui.onboarding.OnBoardingScreen
+import com.team42.spedifymeter.ui.speedscreen.SpeedScreen
+
 /**
  * Project: Spedify Meter
  * File: Routes.kt
@@ -14,3 +22,16 @@ object Routes {
     const val PROFILE = "profile"
     const val SETTINGS = "settings"
 }
+
+@Composable
+fun SpedifyMeterNavGraph(
+    navController: NavHostController,
+    startDestination: String,
+    viewModel: SpeedTestViewModel
+) {
+    NavHost(navController = navController, startDestination = startDestination) {
+        composable("onboard") { OnBoardingScreen() }
+        composable("home") { SpeedScreen(viewModel) }
+    }
+}
+

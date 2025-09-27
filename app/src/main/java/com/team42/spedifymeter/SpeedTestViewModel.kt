@@ -1,22 +1,32 @@
 package com.team42.spedifymeter
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.team42.spedifymeter.data.DataStoreManager
+import com.team42.spedifymeter.data.preferences.PrefsKeys
 import com.team42.spedifymeter.speedtest.SpeedTestService
 import com.team42.spedifymeter.speedtest.SpeedTestEngine
 import com.team42.spedifymeter.speedtest.SpeedTestState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SpeedTestViewModel @Inject constructor(
-    private val speedTestService: SpeedTestService
+    private val speedTestService: SpeedTestService,
+    private val dataStore: DataStoreManager
 ) : ViewModel() {
     private val _state = MutableStateFlow<SpeedTestState>(SpeedTestState.Phase("Idle"))
     val state: StateFlow<SpeedTestState> get() = _state
+    private val _isOnboardingDone = MutableStateFlow(false)
+    val isOnboardingDone: StateFlow<Boolean> = _isOnboardingDone.asStateFlow()
 
     fun startTest() {
         viewModelScope.launch {
@@ -33,6 +43,14 @@ class SpeedTestViewModel @Inject constructor(
     fun cancelTest() {
         speedTestService.cancel()
         _state.value = SpeedTestState.Cancelled
+    }
+
+    fun isUserOnboarded(){
+        viewModelScope.launch {
+            dataStore.getPreference(PrefsKeys.OnboardingDone, false).collect {
+                _isOnboardingDone.value = it
+            }
+        }
     }
 
 }
